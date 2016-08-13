@@ -264,6 +264,7 @@
   cleanupResizer();
   updateBackground();
 
+
   // Валидация формы кадрирования изображения.
 
   var resizeFields = document.querySelectorAll('.upload-resize-controls > input');
@@ -282,12 +283,20 @@
     }
   };
 
+  window.addEventListener('mousemove', function() {
+    var cropValues = currentResizer.getConstraint();
+    resizeSide.value = Math.floor(cropValues.side);
+    resizeX.value = Math.floor(cropValues.x);
+    resizeY.value = Math.floor(cropValues.y);
+  });
+
   resizeX.value = 0;
   resizeY.value = 0;
 
   for (var j = resizeFields.length - 1; j >= 0; j--) {
     resizeFields[j].addEventListener('input', function() {
       validateResizeFields();
+      currentResizer.setConstraint(+resizeX.value, +resizeY.value, +resizeSide.value);
     } );
   }
 
