@@ -234,6 +234,9 @@
     uploadForm.classList.remove('invisible');
   };
 
+  // Cохранение в cookies последнего выбранного фильтра.
+  var browserCookies = require('browser-cookies');
+
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
@@ -255,6 +258,18 @@
       return item.checked;
     })[0].value;
 
+
+    // Установка срока жизни cookies - количество дней с последнего дня рождения Грейс Хоппер,
+    // т.е. с 9 декабря
+    var today = new Date();
+    var amazingGraceBirthday = new Date(today.getFullYear(), 11, 9);
+    if ((today - amazingGraceBirthday) < 0) {
+      amazingGraceBirthday.setFullYear(today.getFullYear() - 1);
+    }
+    var cookiesAge = (today - amazingGraceBirthday) / 1000 / 3600 / 24;
+
+    browserCookies.set('upload-filter', selectedFilter, {expires: cookiesAge});
+
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
@@ -264,9 +279,7 @@
   cleanupResizer();
   updateBackground();
 
-
   // Валидация формы кадрирования изображения.
-
   var resizeFields = document.querySelectorAll('.upload-resize-controls > input');
   var resizeX = document.querySelector('#resize-x');
   var resizeY = document.querySelector('#resize-y');
@@ -299,5 +312,6 @@
       currentResizer.setConstraint(+resizeX.value, +resizeY.value, +resizeSide.value);
     } );
   }
+
 
 })();
