@@ -297,10 +297,13 @@
   };
 
   window.addEventListener('mousemove', function() {
-    var cropValues = currentResizer.getConstraint();
-    resizeSide.value = Math.floor(cropValues.side);
-    resizeX.value = Math.floor(cropValues.x);
-    resizeY.value = Math.floor(cropValues.y);
+    if (currentResizer !== null) {
+      var cropValues = currentResizer.getConstraint();
+      resizeSide.value = Math.floor(cropValues.side);
+      resizeX.value = Math.floor(cropValues.x);
+      resizeY.value = Math.floor(cropValues.y);
+      validateResizeFields();
+    }
   });
 
   resizeX.value = 0;
@@ -312,6 +315,5 @@
       currentResizer.setConstraint(+resizeX.value, +resizeY.value, +resizeSide.value);
     } );
   }
-
 
 })();
