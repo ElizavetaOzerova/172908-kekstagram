@@ -268,7 +268,10 @@
     }
     var cookiesAge = (today - amazingGraceBirthday) / 1000 / 3600 / 24;
 
-    browserCookies.set('upload-filter', selectedFilter, {expires: cookiesAge});
+    var uploadFilter = document.querySelector('#upload-filter');
+    uploadFilter.onsubmit = function() {
+      browserCookies.set('upload-filter', selectedFilter, {expires: cookiesAge});
+    };
 
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
@@ -297,12 +300,14 @@
   };
 
   window.addEventListener('mousemove', function() {
-    if (currentResizer !== null) {
-      var cropValues = currentResizer.getConstraint();
-      resizeSide.value = Math.floor(cropValues.side);
-      resizeX.value = Math.floor(cropValues.x);
-      resizeY.value = Math.floor(cropValues.y);
-      validateResizeFields();
+    if (currentResizer) {
+      if (currentResizer !== null) {
+        var cropValues = currentResizer.getConstraint();
+        resizeSide.value = Math.floor(cropValues.side);
+        resizeX.value = Math.floor(cropValues.x);
+        resizeY.value = Math.floor(cropValues.y);
+        validateResizeFields();
+      }
     }
   });
 
