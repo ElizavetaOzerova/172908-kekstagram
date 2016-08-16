@@ -234,9 +234,6 @@
     uploadForm.classList.remove('invisible');
   };
 
-  // Cохранение в cookies последнего выбранного фильтра.
-  var browserCookies = require('browser-cookies');
-
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
@@ -258,6 +255,11 @@
       return item.checked;
     })[0].value;
 
+    // Cохранение в cookies последнего выбранного фильтра.
+    var browserCookies = require('browser-cookies');
+    var uploadFilter = document.querySelector('#upload-filter');
+    var elems = document.filterForm.elements['upload-filter'];
+    elems.value = browserCookies.get('upload-filter');
 
     // Установка срока жизни cookies - количество дней с последнего дня рождения Грейс Хоппер,
     // т.е. с 9 декабря
@@ -268,9 +270,8 @@
     }
     var cookiesAge = (today - amazingGraceBirthday) / 1000 / 3600 / 24;
 
-    var uploadFilter = document.querySelector('#upload-filter');
     uploadFilter.onsubmit = function() {
-      browserCookies.set('upload-filter', selectedFilter, {expires: cookiesAge});
+      browserCookies.set('upload-filter', elems.value, {expires: cookiesAge});
     };
 
     // Класс перезаписывается, а не обновляется через classList потому что нужно
