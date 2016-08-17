@@ -7,6 +7,8 @@
 
 'use strict';
 
+var browserCookies = require('browser-cookies');
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -256,10 +258,6 @@
     })[0].value;
 
     // Cохранение в cookies последнего выбранного фильтра.
-    var browserCookies = require('browser-cookies');
-    var uploadFilter = document.querySelector('#upload-filter');
-    var elems = document.filterForm.elements['upload-filter'];
-    elems.value = browserCookies.get('upload-filter');
 
     // Установка срока жизни cookies - количество дней с последнего дня рождения Грейс Хоппер,
     // т.е. с 9 декабря
@@ -270,14 +268,17 @@
     }
     var cookiesAge = (today - amazingGraceBirthday) / 1000 / 3600 / 24;
 
-    uploadFilter.onsubmit = function() {
-      browserCookies.set('upload-filter', elems.value, {expires: cookiesAge});
-    };
-
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
+
+    var submitButton = document.querySelector('#filter-fwd');
+
+    submitButton.onclick = function() {
+      browserCookies.set('upload-filter', filterImage.className, {expires: cookiesAge});
+    };
+
   };
 
   cleanupResizer();
