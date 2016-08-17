@@ -241,12 +241,15 @@ var browserCookies = require('browser-cookies');
     var uploadFilter = browserCookies.get('upload-filter');
     if (uploadFilter === 'none') {
       document.querySelector('#upload-filter-none').checked = true;
+      filterImage.classList.add('filter-none');
     }
     if (uploadFilter === 'sepia') {
       document.querySelector('#upload-filter-sepia').checked = true;
+      filterImage.classList.add('filter-sepia');
     }
     if (uploadFilter === 'chrome') {
       document.querySelector('#upload-filter-chrome').checked = true;
+      filterImage.classList.add('filter-chrome');
     }
   }
 
