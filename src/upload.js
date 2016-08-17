@@ -7,6 +7,8 @@
 
 'use strict';
 
+var browserCookies = require('browser-cookies');
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -255,17 +257,34 @@
       return item.checked;
     })[0].value;
 
+    // Установка срока жизни cookies - количество дней с последнего дня рождения Грейс Хоппер,
+    // т.е. с 9 декабря
+    var today = new Date();
+    var amazingGraceBirthday = new Date(today.getFullYear(), 11, 9);
+    if ((today - amazingGraceBirthday) < 0) {
+      amazingGraceBirthday.setFullYear(today.getFullYear() - 1);
+    }
+    var cookiesAge = (today - amazingGraceBirthday) / 1000 / 3600 / 24;
+
+    browserCookies.set('upload-filter', selectedFilter, {expires: cookiesAge});
+
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
+
   };
+
+  // Установка последнего выбранного фильтра.
+  var uploadFilter = browserCookies.get('upload-filter');
+  if (uploadFilter !== null) {
+    document.querySelector('#upload-filter-' + uploadFilter).click();
+  }
 
   cleanupResizer();
   updateBackground();
 
   // Валидация формы кадрирования изображения.
-
   var resizeFields = document.querySelectorAll('.upload-resize-controls > input');
   var resizeX = document.querySelector('#resize-x');
   var resizeY = document.querySelector('#resize-y');
@@ -282,12 +301,25 @@
     }
   };
 
+  window.addEventListener('mousemove', function() {
+    if (currentResizer) {
+      if (currentResizer !== null) {
+        var cropValues = currentResizer.getConstraint();
+        resizeSide.value = Math.floor(cropValues.side);
+        resizeX.value = Math.floor(cropValues.x);
+        resizeY.value = Math.floor(cropValues.y);
+        validateResizeFields();
+      }
+    }
+  });
+
   resizeX.value = 0;
   resizeY.value = 0;
 
   for (var j = resizeFields.length - 1; j >= 0; j--) {
     resizeFields[j].addEventListener('input', function() {
       validateResizeFields();
+      currentResizer.setConstraint(+resizeX.value, +resizeY.value, +resizeSide.value);
     } );
   }
 
