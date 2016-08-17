@@ -236,23 +236,6 @@ var browserCookies = require('browser-cookies');
     uploadForm.classList.remove('invisible');
   };
 
-  // Cохранение в cookies последнего выбранного фильтра.
-  function setUploadFilter() {
-    var uploadFilter = browserCookies.get('upload-filter');
-    if (uploadFilter === 'none') {
-      document.querySelector('#upload-filter-none').checked = true;
-      filterImage.classList.add('filter-none');
-    }
-    if (uploadFilter === 'sepia') {
-      document.querySelector('#upload-filter-sepia').checked = true;
-      filterImage.classList.add('filter-sepia');
-    }
-    if (uploadFilter === 'chrome') {
-      document.querySelector('#upload-filter-chrome').checked = true;
-      filterImage.classList.add('filter-chrome');
-    }
-  }
-
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
@@ -292,9 +275,14 @@ var browserCookies = require('browser-cookies');
 
   };
 
+  // Установка последнего выбранного фильтра.
+  var uploadFilter = browserCookies.get('upload-filter');
+  if (uploadFilter !== null) {
+    document.querySelector('#upload-filter-' + uploadFilter).click();
+  }
+
   cleanupResizer();
   updateBackground();
-  setUploadFilter();
 
   // Валидация формы кадрирования изображения.
   var resizeFields = document.querySelectorAll('.upload-resize-controls > input');
