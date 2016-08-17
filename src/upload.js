@@ -236,6 +236,20 @@ var browserCookies = require('browser-cookies');
     uploadForm.classList.remove('invisible');
   };
 
+  // Cохранение в cookies последнего выбранного фильтра.
+  function setUploadFilter() {
+    var uploadFilter = browserCookies.get('upload-filter');
+    if (uploadFilter === 'none') {
+      document.querySelector('#upload-filter-none').checked = true;
+    }
+    if (uploadFilter === 'sepia') {
+      document.querySelector('#upload-filter-sepia').checked = true;
+    }
+    if (uploadFilter === 'chrome') {
+      document.querySelector('#upload-filter-chrome').checked = true;
+    }
+  }
+
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
@@ -257,8 +271,6 @@ var browserCookies = require('browser-cookies');
       return item.checked;
     })[0].value;
 
-    // Cохранение в cookies последнего выбранного фильтра.
-
     // Установка срока жизни cookies - количество дней с последнего дня рождения Грейс Хоппер,
     // т.е. с 9 декабря
     var today = new Date();
@@ -268,21 +280,18 @@ var browserCookies = require('browser-cookies');
     }
     var cookiesAge = (today - amazingGraceBirthday) / 1000 / 3600 / 24;
 
+    browserCookies.set('upload-filter', selectedFilter, {expires: cookiesAge});
+
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
 
-    var submitButton = document.querySelector('#filter-fwd');
-
-    submitButton.onclick = function() {
-      browserCookies.set('upload-filter', filterImage.className, {expires: cookiesAge});
-    };
-
   };
 
   cleanupResizer();
   updateBackground();
+  setUploadFilter();
 
   // Валидация формы кадрирования изображения.
   var resizeFields = document.querySelectorAll('.upload-resize-controls > input');
