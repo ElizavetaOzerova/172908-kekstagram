@@ -4,6 +4,7 @@ var pictures = [];
 
 window.__jsonpCallback = function(data) {
   pictures = data;
+  console.info(pictures);
 };
 
 function createScript(url, callbackFunction) {
