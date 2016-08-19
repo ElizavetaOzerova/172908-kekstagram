@@ -1,5 +1,9 @@
 'use strict';
 
+var IMAGE_WIDTH = 182;
+var IMAGE_HEIGHT = 182;
+var IMAGE_LOAD_TIMEOUT = 10000;
+
 var pictures = [];
 
 // Создание функции, с помощью которой выполняются JSONP запросы.
@@ -27,9 +31,6 @@ filtersBlock.classList.add('hidden');
 var picturesContainer = document.querySelector('.pictures');
 var templateElement = document.querySelector('#picture-template');
 var elementToClone;
-var IMAGE_WIDTH = 182;
-var IMAGE_HEIGHT = 182;
-var IMAGE_LOAD_TIMEOUT = 10000;
 
 if ('content' in templateElement) {
   elementToClone = templateElement.content.querySelector('.picture');
