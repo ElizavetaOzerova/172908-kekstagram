@@ -5,6 +5,7 @@ var IMAGE_HEIGHT = 182;
 var IMAGE_LOAD_TIMEOUT = 10000;
 
 var pictures = [];
+var picturesContainer = document.querySelector('.pictures');
 
 // Создание функции, с помощью которой выполняются JSONP запросы.
 window.__jsonpCallback = function(data) {
@@ -28,7 +29,6 @@ var filtersBlock = document.querySelector('.filters');
 filtersBlock.classList.add('hidden');
 
 // Генерация списка фотографий на главной странице.
-var picturesContainer = document.querySelector('.pictures');
 var templateElement = document.querySelector('#picture-template');
 var elementToClone;
 
