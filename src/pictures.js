@@ -8,11 +8,11 @@ var picturesContainer = document.querySelector('.pictures');
 var load = require('./load');
 var getPictureElement = require('./picture');
 
-load('http://localhost:1506/api/pictures', '__jsonpCallback');
-
 window.__jsonpCallback = function(data) {
   pictures = data;
   pictures.forEach(function(picture) {
     getPictureElement(picture, picturesContainer);
   });
 };
+
+load('http://localhost:1506/api/pictures', '__jsonpCallback');
