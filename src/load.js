@@ -1,9 +1,10 @@
 'use strict';
 
 (function() {
-  module.exports = function(url, callbackName) {
+  module.exports = function(url, callbackFunction) {
     var script = document.createElement('script');
-    script.src = url + '/?callback=' + callbackName;
+    window.__jsonpCallback = callbackFunction;
+    script.src = url + '/?callback=' + '__jsonpCallback';
     document.body.appendChild(script);
   };
 })();

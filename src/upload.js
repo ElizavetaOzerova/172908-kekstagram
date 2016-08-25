@@ -8,6 +8,7 @@
 'use strict';
 
 var browserCookies = require('browser-cookies');
+var Resizer = require('./resizer');
 
 (function() {
   /** @enum {string} */
