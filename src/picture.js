@@ -1,8 +1,5 @@
 'use strict';
 
-// Подключние модуля показа фото в полноэкранном режиме при нажатии на фото из списка.
-var gallery = require('./gallery');
-
 var IMAGE_WIDTH = 182;
 var IMAGE_HEIGHT = 182;
 var IMAGE_LOAD_TIMEOUT = 10000;
@@ -20,7 +17,7 @@ if ('content' in templateElement) {
   elementToClone = templateElement.querySelector('.picture');
 }
 
-module.exports = function(data, container, indexPicture) {
+module.exports = function(data, container) {
   var element = elementToClone.cloneNode(true);
   element.querySelector('.picture-comments').textContent = data.comments;
   element.querySelector('.picture-likes').textContent = data.likes;
@@ -45,11 +42,6 @@ module.exports = function(data, container, indexPicture) {
     imgElement.src = '';
     element.classList.add('picture-load-failure');
   }, IMAGE_LOAD_TIMEOUT);
-
-  // Обработчик клика по блоку с фотографией.
-  element.onclick = function() {
-    gallery.show(indexPicture);
-  };
 
   backgroundImage.src = data.url;
   return element;

@@ -15,8 +15,14 @@ var gallery = require('./gallery');
 var callback = function(data) {
   pictures = data;
   pictures.forEach(function(picture, indexPicture) {
-    getPictureElement(picture, picturesContainer, indexPicture);
+    var element = getPictureElement(picture, picturesContainer, indexPicture);
+    // Обработчик клика по блоку с фотографией.
+    element.onclick = function(event) {
+      event.preventDefault();
+      gallery.show(indexPicture);
+    };
   });
+
   // Передача в объект галереи фотографии.
   gallery.setPictures(pictures);
 };
