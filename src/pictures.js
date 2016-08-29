@@ -15,7 +15,7 @@ var gallery = require('./gallery');
 var callback = function(data) {
   pictures = data;
   pictures.forEach(function(picture, indexPicture) {
-    var element = getPictureElement(picture, picturesContainer, indexPicture);
+    var element = getPictureElement(picture, picturesContainer);
     // Обработчик клика по блоку с фотографией.
     element.onclick = function(event) {
       event.preventDefault();
