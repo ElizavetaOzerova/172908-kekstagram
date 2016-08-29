@@ -1,10 +1,8 @@
 'use strict';
 
-(function() {
-  module.exports = function(url, callbackFunction) {
-    var script = document.createElement('script');
-    window.__jsonpCallback = callbackFunction;
-    script.src = url + '/?callback=' + '__jsonpCallback';
-    document.body.appendChild(script);
-  };
-})();
+module.exports = function(url, callbackFunction) {
+  var script = document.createElement('script');
+  window.__jsonpCallback = callbackFunction;
+  script.src = url + '/?callback=' + '__jsonpCallback';
+  document.body.appendChild(script);
+};
