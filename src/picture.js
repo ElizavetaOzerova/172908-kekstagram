@@ -55,9 +55,11 @@ filtersBlock.classList.remove('hidden');
 
 
 // Функция-конструктор Picture.
-var Picture = function(data, container) {
+var Picture = function(data, container, indexPicture) {
   // Объект с данными.
   this.data = data;
+
+  this.indexPicture = indexPicture;
 
   // DOM-элемент.
   this.element = getPictureElement(data, container);
@@ -65,14 +67,16 @@ var Picture = function(data, container) {
   this.onPictureElementClick = this.onPictureElementClick.bind(this);
 };
 
+
 // Вызов показа фотогалереи по клику на DOM-элемент.
 Picture.prototype.showGallery = function() {
   this.element.addEventListener('click', this.onPictureElementClick);
 };
 
 // Обработчик клика, который вызывает показ фотогалереи.
-Picture.prototype.onPictureElementClick = function(indexPicture) {
-  gallery.show(indexPicture);
+Picture.prototype.onPictureElementClick = function(evt) {
+  evt.preventDefault();
+  gallery.show(this.indexPicture);
 };
 
 // Удаление обработчика событий.
@@ -81,4 +85,3 @@ Picture.prototype.remove = function() {
 };
 
 module.exports = Picture;
-module.exports = getPictureElement;
