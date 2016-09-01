@@ -12,8 +12,12 @@ var getPictureElement = require('./picture');
 // Подключние модуля показа фото в полноэкранном режиме при нажатии на фото из списка.
 var gallery = require('./gallery');
 
+// Подключние модуля c конструктор Picture.
+var Picture = require('./picture');
+
 var callback = function(data) {
   pictures = data;
+  var newPicture = new Picture(pictures, picturesContainer);
   pictures.forEach(function(picture, indexPicture) {
     var element = getPictureElement(picture, picturesContainer);
     // Обработчик клика по блоку с фотографией.
