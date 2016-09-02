@@ -1,5 +1,7 @@
 'use strict';
 
+var gallery = require('./gallery');
+
 var IMAGE_WIDTH = 182;
 var IMAGE_HEIGHT = 182;
 var IMAGE_LOAD_TIMEOUT = 10000;
@@ -17,7 +19,7 @@ if ('content' in templateElement) {
   elementToClone = templateElement.querySelector('.picture');
 }
 
-module.exports = function(data, container) {
+var getPictureElement = function(data, container) {
   var element = elementToClone.cloneNode(true);
   element.querySelector('.picture-comments').textContent = data.comments;
   element.querySelector('.picture-likes').textContent = data.likes;
@@ -46,5 +48,40 @@ module.exports = function(data, container) {
   backgroundImage.src = data.url;
   return element;
 };
+
 // Отображаем блок с фильтрами.
 filtersBlock.classList.remove('hidden');
+
+
+
+// Функция-конструктор Picture.
+var Picture = function(data, container, indexPicture) {
+  // Объект с данными.
+  this.data = data;
+
+  this.indexPicture = indexPicture;
+
+  // DOM-элемент.
+  this.element = getPictureElement(data, container);
+
+  this.onPictureElementClick = this.onPictureElementClick.bind(this);
+};
+
+
+// Вызов показа фотогалереи по клику на DOM-элемент.
+Picture.prototype.showGallery = function() {
+  this.element.addEventListener('click', this.onPictureElementClick);
+};
+
+// Обработчик клика, который вызывает показ фотогалереи.
+Picture.prototype.onPictureElementClick = function(evt) {
+  evt.preventDefault();
+  gallery.show(this.indexPicture);
+};
+
+// Удаление обработчика событий.
+Picture.prototype.remove = function() {
+  this.element.removeEventListener('click', this.onPictureElementClick);
+};
+
+module.exports = Picture;
