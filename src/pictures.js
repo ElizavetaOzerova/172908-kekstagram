@@ -54,8 +54,23 @@ var changeFilter = function(filterID) {
 };
 
 filters.addEventListener('click', function(evt) {
-  changeFilter(evt.target.id);
+  console.log(evt.target.id);
+  if (evt.target.classList.contains('filters-radio')) {
+    changeFilter(evt.target.id);
+  }
 });
+
+/** @return {boolean} */
+var isNextPageAvailable = function(loadedPictures) {
+  return pageNumber < Math.ceil(loadedPictures / PAGE_SIZE);
+};
+
+
+/** @return {boolean} */
+var isBottomReached = function() {
+  var footerPosition = footer.getBoundingClientRect();
+  return footerPosition.top - window.innerHeight - GAP <= 0;
+};
 
 // Добавляем обработчик события scroll, который по достижении низа страницы
 // вызывает отрисовку следующего блока фото.
@@ -65,7 +80,7 @@ window.addEventListener('scroll', function() {
   // Проверка обработчика будет срабатывать не чаще, чем раз в 100 мсек.
   if (Date.now() - lastCall >= THROTTLE_TIMEOUT) {
     // Если виден футер, отрисовываем следующую страницу.
-    if (footer.getBoundingClientRect().bottom - window.innerHeight <= GAP) {
+    if (isBottomReached() && isNextPageAvailable(loadedData)) {
       loadPictures(activeFilter, pageNumber++);
     }
 
