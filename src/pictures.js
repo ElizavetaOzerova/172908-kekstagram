@@ -46,7 +46,7 @@ var renderPictures = function(loadedPictures) {
   gallery.setPictures(loadedPictures);
 
   if (isFooterVisible()) {
-    loadPictures(activeFilter, pageNumber++);
+    loadPictures(activeFilter, ++pageNumber);
   }
 };
 
@@ -80,7 +80,7 @@ window.addEventListener('scroll', function() {
   if (Date.now() - lastCall >= THROTTLE_TIMEOUT) {
     // Если виден футер, отрисовываем следующую страницу.
     if (isFooterVisible()) {
-      loadPictures(activeFilter, pageNumber++);
+      loadPictures(activeFilter, ++pageNumber);
     }
 
     lastCall = Date.now();
