@@ -27,8 +27,16 @@ var gallery = require('./gallery');
 // Подключние модуля c конструктором Picture.
 var Picture = require('./picture');
 
+/** @return {boolean} */
+var isFooterVisible = function() {
+  return footer.getBoundingClientRect().top - window.innerHeight <= GAP;
+};
 
 var renderPictures = function(loadedPictures) {
+  if (loadedPictures.length === 0) {
+    return;
+  }
+
   loadedPictures.forEach(function(picture, indexPicture) {
     var newPicture = new Picture(picture, picturesContainer, indexPicture);
     newPicture.showGallery();
@@ -37,7 +45,7 @@ var renderPictures = function(loadedPictures) {
   // Передача в объект галереи фотографии.
   gallery.setPictures(loadedPictures);
 
-  while (pageNumber < Math.ceil(loadedPictures.length / PAGE_SIZE)) {
+  if (isFooterVisible()) {
     loadPictures(activeFilter, pageNumber++);
   }
 };
@@ -71,7 +79,7 @@ window.addEventListener('scroll', function() {
   // Проверка обработчика будет срабатывать не чаще, чем раз в 100 мсек.
   if (Date.now() - lastCall >= THROTTLE_TIMEOUT) {
     // Если виден футер, отрисовываем следующую страницу.
-    if (footer.getBoundingClientRect().top - window.innerHeight <= GAP) {
+    if (isFooterVisible()) {
       loadPictures(activeFilter, pageNumber++);
     }
 
