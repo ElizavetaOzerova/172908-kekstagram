@@ -29,9 +29,9 @@ var getPictureElement = function(data, container) {
   var imgElement = element.querySelector('img');
   var backgroundLoadTimeout;
 
-  backgroundImage.onload = function(event) {
+  backgroundImage.onload = function(evt) {
     clearTimeout(backgroundLoadTimeout);
-    imgElement.src = event.target.src;
+    imgElement.src = evt.target.src;
     imgElement.width = IMAGE_WIDTH;
     imgElement.height = IMAGE_HEIGHT;
   };
