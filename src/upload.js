@@ -150,7 +150,7 @@ var Resizer = require('./resizer');
 
         showMessage(Action.UPLOADING);
 
-        fileReader.onload = function() {
+        fileReader.addEventListener('load', function() {
           cleanupResizer();
 
           currentResizer = new Resizer(fileReader.result);
@@ -161,7 +161,7 @@ var Resizer = require('./resizer');
           resizeForm.classList.remove('invisible');
 
           hideMessage();
-        };
+        });
 
         fileReader.readAsDataURL(element.files[0]);
       } else {
@@ -300,7 +300,7 @@ var Resizer = require('./resizer');
     }
   };
 
-  window.addEventListener('mousemove', function() {
+  window.addEventListener('resizerchange', function() {
     if (currentResizer) {
       if (currentResizer !== null) {
         var cropValues = currentResizer.getConstraint();
