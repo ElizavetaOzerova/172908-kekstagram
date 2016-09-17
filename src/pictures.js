@@ -18,6 +18,13 @@ var Filter = {
 
 var activeFilter = localStorage.getItem('defaultFilter') || Filter.POPULAR;
 
+if (localStorage.getItem('checkedFilter') === 'true') {
+  filters[activeFilter].setAttribute('checked', 'checked');
+} else {
+  filters[activeFilter].removeAttribute('checked');
+}
+
+
 // Подключение модуля для работы с данными по сети.
 var load = require('./load');
 
@@ -69,9 +76,9 @@ var changeFilter = function(filterID) {
 filters.addEventListener('click', function(evt) {
   if (evt.target.classList.contains('filters-radio')) {
     changeFilter(evt.target.id);
-    activeFilter = evt.target.id;
     // Сохранение последнего примененного фильтра в localStorage
-    localStorage.setItem('defaultFilter', activeFilter);
+    localStorage.setItem('defaultFilter', evt.target.id);
+    localStorage.setItem('checkedFilter', evt.target.checked);
   }
 });
 
