@@ -16,7 +16,7 @@ var Filter = {
   'DISCUSSED': 'filter-discussed'
 };
 
-var activeFilter = Filter.POPULAR;
+var activeFilter = localStorage.getItem('defaultFilter') || Filter.POPULAR;
 
 // Подключение модуля для работы с данными по сети.
 var load = require('./load');
@@ -62,12 +62,16 @@ var changeFilter = function(filterID) {
   picturesContainer.innerHTML = '';
   activeFilter = filterID;
   pageNumber = 0;
+
   loadPictures(filterID, pageNumber);
 };
 
 filters.addEventListener('click', function(evt) {
   if (evt.target.classList.contains('filters-radio')) {
     changeFilter(evt.target.id);
+    activeFilter = evt.target.id;
+    // Сохранение последнего примененного фильтра в localStorage
+    localStorage.setItem('defaultFilter', activeFilter);
   }
 });
 
