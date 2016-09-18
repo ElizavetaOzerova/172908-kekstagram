@@ -18,13 +18,6 @@ var Filter = {
 
 var activeFilter = localStorage.getItem('defaultFilter') || Filter.POPULAR;
 
-if (localStorage.getItem('checkedFilter') === 'true') {
-  filters[activeFilter].setAttribute('checked', 'checked');
-} else {
-  filters[activeFilter].removeAttribute('checked');
-}
-
-
 // Подключение модуля для работы с данными по сети.
 var load = require('./load');
 
@@ -69,7 +62,6 @@ var changeFilter = function(filterID) {
   picturesContainer.innerHTML = '';
   activeFilter = filterID;
   pageNumber = 0;
-
   loadPictures(filterID, pageNumber);
 };
 
@@ -78,7 +70,6 @@ filters.addEventListener('click', function(evt) {
     changeFilter(evt.target.id);
     // Сохранение последнего примененного фильтра в localStorage
     localStorage.setItem('defaultFilter', evt.target.id);
-    localStorage.setItem('checkedFilter', evt.target.checked);
   }
 });
 
@@ -98,4 +89,4 @@ window.addEventListener('scroll', function() {
   }
 });
 
-changeFilter(activeFilter);
+filters[activeFilter].click();
