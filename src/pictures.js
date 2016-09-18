@@ -16,7 +16,7 @@ var Filter = {
   'DISCUSSED': 'filter-discussed'
 };
 
-var activeFilter = Filter.POPULAR;
+var activeFilter = localStorage.getItem('defaultFilter') || Filter.POPULAR;
 
 // Подключение модуля для работы с данными по сети.
 var load = require('./load');
@@ -68,6 +68,8 @@ var changeFilter = function(filterID) {
 filters.addEventListener('click', function(evt) {
   if (evt.target.classList.contains('filters-radio')) {
     changeFilter(evt.target.id);
+    // Сохранение последнего примененного фильтра в localStorage
+    localStorage.setItem('defaultFilter', evt.target.id);
   }
 });
 
@@ -87,4 +89,4 @@ window.addEventListener('scroll', function() {
   }
 });
 
-changeFilter(activeFilter);
+filters[activeFilter].click();
