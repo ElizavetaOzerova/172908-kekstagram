@@ -1,6 +1,7 @@
 'use strict';
 
 // Создание конструктора Gallery (отвечает за показ фотографий).
+// Методы и обработчики событий объявлены в прототипе.
 var Gallery = function() {
   this.pictures = [];
   this.activePicture = 0;
